@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { dataFake } from './../../data/dataFake';
 
 @Component({
   selector: 'app-content',
@@ -7,16 +8,25 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./content.component.css'],
 })
 export class ContentComponent implements OnInit {
-  photoCover: string =
-    'https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/7F51FA9F6CBD9F0C9B1394B1CC0A6A842D07091318674E234CD33CBF7C28CDC3/scale?width=1200&aspectRatio=1.78&format=jpeg';
-  contentTitle: string = 'NOTÍCIA EXEMPLO';
-  contentDescription: string = 'bla bla bla';
+  photoCover: string = '';
+  contentTitle: string = '';
+  contentDescription: string = '';
+  private id: string | null = '0';
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((value) => {
-      console.log(value.get('id'));
+      this.id = value.get('id');
+      this.setValuesToComponents(this.id);
     });
+  }
+
+  setValuesToComponents(id: string | null) {
+    const resultado = dataFake.filter((article) => article.id === id)[0];
+
+    this.contentTitle = resultado.title;
+    this.contentDescription = resultado.description;
+    this.photoCover = resultado.photoCover;
   }
 }
